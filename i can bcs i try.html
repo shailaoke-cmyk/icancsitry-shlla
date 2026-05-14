@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aku Bisa Karena Aku Berusaha — By shnnella</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #F8ECDC;
+            --warm-beige: #F5DDD5;
+            --soft-brown: #8B5E3C;
+            --deep-brown: #5C3D2E;
+            --accent-sage: #A8C5A0;
+            --accent-rose: #E8B4B8;
+            --accent-mint: #C5D5C0;
+            --text-dark: #3D2B1F;
+            --text-light: #6B5344;
+            --shadow: rgba(92, 61, 46, 0.08);
+            --shadow-hover: rgba(92, 61, 46, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y proximity;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        /* Animated Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(168, 197, 160, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(232, 180, 184, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(197, 213, 192, 0.1) 0%, transparent 60%),
+                linear-gradient(135deg, #F8ECDC 0%, #F5DDD5 50%, #F0E6D8 100%);
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .float-item {
+            position: absolute;
+            opacity: 0.06;
+            font-size: 2rem;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .float-item:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .float-item:nth-child(2) { top: 20%; right: 15%; animation-delay: -5s; }
+        .float-item:nth-child(3) { top: 60%; left: 5%; animation-delay: -10s; }
+        .float-item:nth-child(4) { top: 40%; right: 10%; animation-delay: -15s; }
+        .float-item:nth-child(5) { top: 80%; left: 20%; animation-delay: -7s; }
+        .float-item:nth-child(6) { top: 30%; left: 50%; animation-delay: -12s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-30px) rotate(5deg); }
+            50% { transform: translateY(-15px) rotate(-3deg); }
+            75% { transform: translateY(-40px) rotate(2deg); }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            z-index: 1000;
+            background: rgba(139, 94, 60, 0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--soft-brown), var(--accent-sage));
+            width: 0%;
+            transition: width 0.1s ease;
+            border-radius: 0 2px 2px 0;
+        }
+
+        /* Navigation */
+        .nav-dots {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(139, 94, 60, 0.2);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .nav-dot::after {
+            content: attr(data-title);
+            position: absolute;
+            right: 24px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--deep-brown);
+            color: var(--cream);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-dot:hover::after {
+            opacity: 1;
+        }
+
+        .nav-dot.active {
+            background: var(--soft-brown);
+            border-color: var(--cream);
+            transform: scale(1.3);
+            box-shadow: 0 0 15px rgba(139, 94, 60, 0.3);
+        }
+
+        /* Sections */
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            position: relative;
+            scroll-snap-align: start;
+        }
+
+        .content-wrapper {
+            max-width: 900px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Book Cover */
+        .book-cover {
+            text-align: center;
+            padding: 60px 40px;
+            background: linear-gradient(145deg, #FFF8F0 0%, #F5EDE3 100%);
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 60px var(--shadow),
+                0 1px 3px rgba(0,0,0,0.05),
+                inset 0 1px 0 rgba(255,255,255,0.8);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(139, 94, 60, 0.08);
+        }
+
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(168,197,160,0.08) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .author-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(168, 197, 160, 0.2);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--soft-brown);
+            margin-bottom: 30px;
+            border: 1px solid rgba(168, 197, 160, 0.3);
+        }
+
+        .author-badge .globe {
+            font-size: 1.2rem;
+        }
+
+        .book-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            color: var(--deep-brown);
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .book-title .highlight {
+            color: var(--soft-brown);
+            position: relative;
+            display: inline-block;
+        }
+
+        .book-title .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(120deg, rgba(168,197,160,0.4) 0%, rgba(232,180,184,0.4) 100%);
+            border-radius: 4px;
+            z-index: -1;
+            transform: skewX(-3deg);
+        }
+
+        .book-subtitle {
+            font-family: 'Caveat', cursive;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 40px;
+        }
+
+        .scroll-hint {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        .scroll-hint .mouse {
+            width: 24px;
+            height: 36px;
+            border: 2px solid var(--soft-brown);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .scroll-hint .mouse::after {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 8px;
+            background: var(--soft-brown);
+            border-radius: 2px;
+            animation: scroll-wheel 2s infinite;
+        }
+
+        @keyframes scroll-wheel {
+            0% { opacity: 1; top: 6px; }
+            100% { opacity: 0; top: 18px; }
+        }
+
+        /* Chapter Cards */
+        .chapter-card {
+            background: linear-gradient(145deg, #FFF8F0 0%, #F8F0E8 100%);
+            border-radius: 20px;
+            padding: 50px 45px;
+            box-shadow: 
+                0 15px 40px var(--shadow),
+                0 1px 2px rgba(0,0,0,0.03);
+            border: 1px solid rgba(139, 94, 60, 0.06);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s ease;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 25px 50px var(--shadow-hover),
+                0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .chapter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-sage), var(--accent-rose), var(--accent-mint));
+            opacity: 0.6;
+        }
+
+        .chapter-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--accent-sage);
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .chapter-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--deep-brown);
+            margin-bottom: 25px;
+            line-height: 1.3;
+        }
+
+        .chapter-content {
+            font-size: 1.05rem;
+            line-height: 2;
+            color: var(--text-dark);
+        }
+
+        .chapter-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        .chapter-content p:first-child::first-letter {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            float: left;
+            line-height: 0.8;
+            padding-right: 12px;
+            padding-top: 8px;
+            color: var(--soft-brown);
+            font-weight: 700;
+        }
+
+        .pull-quote {
+            background: linear-gradient(135deg, rgba(168,197,160,0.15) 0%, rgba(232,180,184,0.15) 100%);
+            border-left: 4px solid var(--soft-brown);
+            padding: 25px 30px;
+            margin: 30px 0;
+            border-radius: 0 12px 12px 0;
+            font-family: 'Caveat', cursive;
+            font-size: 1.4rem;
+            color: var(--deep-brown);
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .pull-quote::before {
+            content: '"';
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--accent-sage);
+            opacity: 0.4;
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            line-height: 1;
+        }
+
+        /* Decorative Elements */
+        .deco-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .deco-1 { width: 300px; height: 300px; background: var(--accent-sage); top: -100px; right: -100px; }
+        .deco-2 { width: 200px; height: 200px; background: var(--accent-rose); bottom: -50px; left: -50px; }
+        .deco-3 { width: 150px; height: 150px; background: var(--accent-mint); top: 50%; right: -30px; }
+
+        /* Section Divider */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 40px 0;
+            color: var(--soft-brown);
+            opacity: 0.5;
+        }
+
+        .section-divider .line {
+            width: 60px;
+            height: 1px;
+            background: var(--soft-brown);
+        }
+
+        .section-divider .icon {
+            font-size: 1.2rem;
+        }
+
+        /* Interactive Highlight */
+        .highlight-text {
+            background: linear-gradient(120deg, rgba(168,197,160,0.3) 0%, rgba(232,180,184,0.3) 100%);
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .highlight-text:hover {
+            background: linear-gradient(120deg, rgba(168,197,160,0.5) 0%, rgba(232,180,184,0.5) 100%);
+            transform: scale(1.02);
+        }
+
+        /* Footer */
+        .book-footer {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(180deg, transparent 0%, rgba(139,94,60,0.05) 100%);
+        }
+
+        .footer-quote {
+            font-family: 'Caveat', cursive;
+            font-size: 2rem;
+            color: var(--deep-brown);
+            margin-bottom: 20px;
+        }
+
+        .footer-author {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Page Turn Animation */
+        .page-enter {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .page-enter.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-dots { right: 15px; }
+            .chapter-card { padding: 30px 25px; }
+            .book-cover { padding: 40px 25px; }
+            .section { padding: 60px 15px; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--cream);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--soft-brown);
+            border-radius: 4px;
+            opacity: 0.5;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--deep-brown);
+        }
+
+        /* Reading Mode Toggle */
+        .reading-mode-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--soft-brown);
+            color: var(--cream);
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(139, 94, 60, 0.3);
+            transition: all 0.3s ease;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .reading-mode-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(139, 94, 60, 0.4);
+        }
+
+        /* Dark reading mode */
+        body.reading-mode {
+            --cream: #2C2416;
+            --warm-beige: #3D3020;
+            --text-dark: #E8DDD0;
+            --text-light: #B8A898;
+            --deep-brown: #D4C4B0;
+            --soft-brown: #C4A882;
+        }
+
+        body.reading-mode .book-cover,
+        body.reading-mode .chapter-card {
+            background: linear-gradient(145deg, #3D3020 0%, #2C2416 100%);
+            border-color: rgba(196, 168, 130, 0.1);
+        }
+
+        body.reading-mode .bg-pattern {
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(168, 197, 160, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(232, 180, 184, 0.05) 0%, transparent 50%),
+                linear-gradient(135deg, #2C2416 0%, #3D3020 50%, #2A2018 100%);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-pattern"></div>
+
+    <!-- Floating Decorative Elements -->
+    <div class="floating-elements">
+        <div class="float-item">📚</div>
+        <div class="float-item">✨</div>
+        <div class="float-item">🌿</div>
+        <div class="float-item">📖</div>
+        <div class="float-item">💡</div>
+        <div class="float-item">🎯</div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" data-title="Cover" onclick="scrollToSection(0)"></div>
+        <div class="nav-dot" data-title="Pendahuluan" onclick="scrollToSection(1)"></div>
+        <div class="nav-dot" data-title="Bakat" onclick="scrollToSection(2)"></div>
+        <div class="nav-dot" data-title="Deliberate Practice" onclick="scrollToSection(3)"></div>
+        <div class="nav-dot" data-title="Penutup" onclick="scrollToSection(4)"></div>
+    </div>
+
+    <!-- Reading Mode Toggle -->
+    <button class="reading-mode-btn" onclick="toggleReadingMode()" title="Toggle Reading Mode">🌙</button>
+
+    <!-- Section 1: Cover -->
+    <section class="section" id="section-0">
+        <div class="content-wrapper">
+            <div class="book-cover page-enter">
+                <div class="author-badge">
+                    <span class="globe">🌍</span>
+                    <span>By shnnella</span>
+                </div>
+                <h1 class="book-title">
+                    AKU BISA<br>
+                    <span class="highlight">KARENA AKU</span><br>
+                    BERUSAHA
+                </h1>
+                <p class="book-subtitle">Perjalanan memahami makna usaha dan bakat dalam meraih kesuksesan</p>
+                <div class="scroll-hint">
+                    <div class="mouse"></div>
+                    <span>Gulir untuk membaca</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Introduction -->
+    <section class="section" id="section-1">
+        <div class="content-wrapper">
+            <div class="chapter-card page-enter">
+                <div class="deco-circle deco-1"></div>
+                <div class="deco-circle deco-2"></div>
+                <span class="chapter-number">Pendahuluan</span>
+                <h2 class="chapter-title">Pertanyaan yang Menggugah</h2>
+                <div class="chapter-content">
+                    <p>Kita mungkin pernah berpikir mengapa kita seolah tidak pernah bisa sehebat orang lain, atau mengapa seseorang bisa melakukan hal yang begitu mengagumkan? Apakah itu bakat? Seberapa jauh usaha mempengaruhi keberhasilan seseorang?</p>
+
+                    <div class="pull-quote">
+                        Bakat itu nyata, tetapi setiap orang memiliki peluang dan kesempatan yang sama, karena bakat tidak akan pernah cukup untuk membuat kita dapat menembus suatu keberhasilan.
+                    </div>
+
+                    <p>Pada akhirnya kita membutuhkan <span class="highlight-text">usaha dan kerja keras</span> untuk mencapai sebuah keberhasilan. Kesimpulannya bakat adalah kondisi genetik yang mendorong kita agar semangat untuk berusaha dan menekuni suatu bidang.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Bakat -->
+    <section class="section" id="section-2">
+        <div class="content-wrapper">
+            <div class="chapter-card page-enter">
+                <div class="deco-circle deco-1"></div>
+                <div class="deco-circle deco-3"></div>
+                <span class="chapter-number">Bab I</span>
+                <h2 class="chapter-title">Memahami Bakat</h2>
+                <div class="chapter-content">
+                    <p>Setiap orang lahir dengan kondisi berbeda karena riwayah genetik yang tidak sama. Lalu apakah itu berarti setiap orang memiliki peluang yang berbeda?</p>
+
+                    <p>Faktanya banyak orang telah mencapai pencapaian yang luar biasa di usia dini, hal ini mungkin membuat kita berpikir bahwa bakat adalah suatu keberuntunganan alami yang hanya didapatkan oleh orang tertentu sejak mereka lahir.</p>
+
+                    <div class="section-divider">
+                        <div class="line"></div>
+                        <span class="icon">🌱</span>
+                        <div class="line"></div>
+                    </div>
+
+                    <p>Menurutku bakat itu nyata, tetapi setiap orang memiliki peluang dan kesempatan yang sama, karena bakat tidak akan pernah cukup untuk membuat kita dapat menembus suatu keberhasilan. Pada akhirnya kita membutuhkan usaha dan kerja keras untuk mencapai sebuah keberhasilan.</p>
+
+                    <div class="pull-quote">
+                        Kesimpulannya bakat adalah kondisi genetik yang mendorong kita agar semangat untuk berusaha dan menekuni suatu bidang.
+                    </div>
+
+                    <p>Contohnya seseorang terlahir dengan suara lembut, dia bisa menyalurkan kondisi tersebut untuk bernyanyi, mengisi suara, menjadi narrator atau berbagai profesi lainnya, yang menjadikan keunggulan bagi kemampuannya.</p>
+
+                    <p>Misalkan orang tersebut memilih untuk menjadi penyanyi, kemudian ia pendapat pengakuan orang lain serta dirinya sendiri atas itu, maka hal itu akan menjadi <span class="highlight-text">memicu tumbuhnya semangat dan ambisi yang tinggi</span>. Sehingga, orang tersebut ingin berlatih dan berusaha demi mencapai sebuah keberhasilan terbaik menurut dirinya.</p>
+
+                    <p><strong>Jadi bakat bukan berbakat, melainkan faktor yang mendukung dia untuk berusaha.</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Deliberate Practice -->
+    <section class="section" id="section-3">
+        <div class="content-wrapper">
+            <div class="chapter-card page-enter">
+                <div class="deco-circle deco-2"></div>
+                <div class="deco-circle deco-3"></div>
+                <span class="chapter-number">Bab II</span>
+                <h2 class="chapter-title">Deliberate Practice</h2>
+                <div class="chapter-content">
+                    <p>Dapat disimpulkan bahwa komponen utama yang menentukan suatu keberhasilan bukanlah kondisi genetik melainkan usaha dan kesempatan yang telah perjuangkan.</p>
+
+                    <div class="pull-quote">
+                        Jadi menurut saya hal yang setara dan mampu menyamai bakat adalah keinginan dan semangat kita untuk meraih keberhasilan.
+                    </div>
+
+                    <p>Entah semangat yang dipicu oleh lingkungan ataupun pemicu lainnya. <span class="highlight-text">Yang terpenting adalah konsistensi dan tekad</span> untuk terus berkembang serta tidak mudah menyerah dalam menghadapi tantangan.</p>
+
+                    <p>Dengan latihan yang terarah dan disengaja — yang dalam psikologi dikenal sebagai <em>deliberate practice</em> — seseorang dapat mengasah kemampuannya hingga mencapai tingkat keahlian yang tinggi, bahkan melebihi mereka yang dianggap "berbakat" namun tidak berusaha.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Conclusion -->
+    <section class="section" id="section-4">
+        <div class="content-wrapper">
+            <div class="chapter-card page-enter">
+                <div class="deco-circle deco-1"></div>
+                <div class="deco-circle deco-2"></div>
+                <span class="chapter-number">Penutup</span>
+                <h2 class="chapter-title">Kesimpulan</h2>
+                <div class="chapter-content">
+                    <p>Dapat disimpulkan bahwa komponen utama yang menentukan suatu keberhasilan bukanlah kondisi genetik melainkan <span class="highlight-text">usaha dan kesempatan yang telah diperjuangkan</span>.</p>
+
+                    <p>Jadi menurut saya hal yang setara dan mampu menyamai bakat adalah keinginan dan semangat kita untuk meraih keberhasilan, entah semangat yang dipicu oleh lingkungan ataupun pemicu lainnya.</p>
+
+                    <div class="section-divider">
+                        <div class="line"></div>
+                        <span class="icon">⭐</span>
+                        <div class="line"></div>
+                    </div>
+
+                    <p style="text-align: center; font-family: 'Caveat', cursive; font-size: 1.5rem; color: var(--soft-brown);">
+                        Ingatlah selalu: Aku bisa, karena aku berusaha.
+                    </p>
+                </div>
+            </div>
+
+            <div class="book-footer page-enter">
+                <div class="footer-quote">"Usaha tidak akan pernah mengkhianati hasil"</div>
+                <div class="footer-author">— shnnella</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Progress Bar
+        function updateProgress() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = (scrollTop / docHeight) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        // Navigation Dots
+        function scrollToSection(index) {
+            const section = document.getElementById(`section-${index}`);
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function updateActiveDot() {
+            const sections = document.querySelectorAll('.section');
+            const dots = document.querySelectorAll('.nav-dot');
+
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    dots[index].classList.add('active');
+                }
+            });
+        }
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.page-enter').forEach(el => observer.observe(el));
+
+        // Scroll Events
+        window.addEventListener('scroll', () => {
+            updateProgress();
+            updateActiveDot();
+        });
+
+        // Reading Mode Toggle
+        function toggleReadingMode() {
+            document.body.classList.toggle('reading-mode');
+            const btn = document.querySelector('.reading-mode-btn');
+            btn.textContent = document.body.classList.contains('reading-mode') ? '☀️' : '🌙';
+            btn.title = document.body.classList.contains('reading-mode') ? 'Light Mode' : 'Reading Mode';
+        }
+
+        // Parallax Effect for floating elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const floatItems = document.querySelectorAll('.float-item');
+            floatItems.forEach((item, index) => {
+                const speed = 0.5 + (index * 0.1);
+                item.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.02}deg)`;
+            });
+        });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            const sections = document.querySelectorAll('.section');
+            let currentIndex = 0;
+
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= 100) currentIndex = index;
+            });
+
+            if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                e.preventDefault();
+                if (currentIndex < sections.length - 1) {
+                    scrollToSection(currentIndex + 1);
+                }
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                if (currentIndex > 0) {
+                    scrollToSection(currentIndex - 1);
+                }
+            }
+        });
+
+        // Initialize
+        updateProgress();
+        updateActiveDot();
+    </script>
+</body>
+</html>
